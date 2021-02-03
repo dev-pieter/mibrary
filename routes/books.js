@@ -2,6 +2,7 @@ const { Router } = require('express')
 const express = require('express')
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 const router = express.Router()
 const Book = require('../models/book')
 const uploadPath = path.join('public', Book.coverImageBasePath)
@@ -19,7 +20,21 @@ const upload = multer({
 
 //all books route
 router.get('/', async (req, res) => {
-    res.send('All books')
+    let query = Book.find()
+
+    if(req.query.title != null && req.query.title !== '') {
+        query = query.regex('title', new RegExp(req.query.title, 'i'))
+    }
+
+    try {
+        const books = await query.exec()
+        res.render('books/index', {
+            books: books, 
+            searchOptions: req.query
+        })
+    } catch (error) {
+        res.redirect('/')
+    }
     
 })
 
@@ -46,6 +61,9 @@ router.post('/', upload.single('cover'), async (req, res) => {
         const newBook = await book.save() 
         res.redirect(`books`)
     } catch (error) {
+        if (book.coverImageName != null) {
+            removeBookCover(book.coverImageName)
+        }
         renderNewPage(res, book, true)
     }
 })
@@ -64,6 +82,12 @@ async function renderNewPage(res, book, hasError = false) {
     } catch (error) {
         res.redirect('/books')
     }
+}
+
+function removeBookCover(fileName){
+    fs.unlink(path.join(uploadPath, fileName), err =>{
+        if (err) console.error(err)
+    })
 }
     
 

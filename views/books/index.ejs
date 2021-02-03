@@ -1,0 +1,26 @@
+<h2>Search Books</h2>
+<form action="/books" method="GET">
+    <label for="">Title</label>
+    <input type="text" name="title" value="<%= searchOptions.title %>"></input>
+    <button type="submit">Search</button>
+</form>
+<br></br>
+<div class="container-fluid">
+    <div class="row">
+        <% books.forEach(book => { %>
+            <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="<%= book.coverImagePath %>" class="card-img-top" alt="<%= book.coverImageName %>">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= book.title %></h5>
+                      <p class="card-text"><%= book.description %></p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+
+                <!-- <img src="uploads/bookCovers/<%= book.coverImageName %>" alt="<%= book.coverImageName %>" style="width: 200px;">
+                <a href=""><%= book.title %></a> -->
+            </div>
+        <% }) %>
+    </div>
+</div>

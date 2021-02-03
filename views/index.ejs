@@ -1,1 +1,22 @@
-Middle
+
+<span style="text-align: center; align-items: center;">
+    <br/>
+    <h2>Recently Added</h2>
+    <br></br>
+    <div class="container-fluid d-flex justify-content-center" style="width: 100%;">
+        <div class="row">
+            <% books.forEach(book => { %>
+                <div class="col-sm-4" style="padding: 20px;">
+                    <div class="card" style="width: 18rem; background: whitesmoke; padding: 10px;">
+                        <img src="<%= book.coverImagePath %>" class="card-img-top" alt="<%= book.coverImageName %>">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= book.title %></h5>
+                          <p class="card-text"><%= book.description %></p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</span>
