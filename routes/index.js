@@ -35,6 +35,7 @@ const oauthClient = new google.auth.OAuth2({
 const isLoggedIn = (req, res, next) => {
     if(req.user){
         logedIn = true
+        console.log(req.user)
         next()
     }else {
         res.redirect('/google')
