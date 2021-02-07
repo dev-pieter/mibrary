@@ -4,6 +4,11 @@ const path = require('path')
 const coverImageBasePath = 'uploads/bookCovers'
 
 const bookSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
+
     title: {
         type: String,
         required: true
@@ -39,6 +44,11 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Author'
+    },
+
+    link: {
+        type: String,
+        required: false
     }
 })
 

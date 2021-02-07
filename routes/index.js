@@ -2,7 +2,6 @@ const { Router, response } = require('express')
 const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
-const { json } = require('body-parser')
 const axios = require('axios')
 const http = require('http')
 const opn = require('open')
@@ -10,18 +9,11 @@ const destroyer = require('server-destroy');
 const path = require('path')
 const {google} = require('googleapis')
 const getAuthenticatedClient = require('./OAuth2.js')
-const { authenticate } = require('@google-cloud/local-auth')
-
-const CLIENT_ID = '512409493412-p8em5bgu9urlf0hg0gpn0qj7fssd9pis.apps.googleusercontent.com'
-const CLIENT_SECRET = 'ycFHTbcuhkK_Qg9AMjePZmwt'
-const REDIRECT_URL = 'http://localhost:3001/oauth2callback'
-
-var API_BASE_URL = 'https://www.googleapis.com/books/v1/users/';
 
 // const authClient = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
 
-var logedIn = false
+logedIn = false
 var oAuth2Client
 var response1 
 var responseShelf
@@ -60,24 +52,6 @@ const url = 'https://www.googleapis.com/books/v1/mylibrary/bookshelves';
 //     });
 //   }
 
-var defaultOptions = {
-    // Google API key
-    key: 'AIzaSyBUtmkaC7BEr4t4svqWEc6DzleBhmnxQCc',
-    // Search in a specified field
-    field: null,
-
-    uid:  '118400095960063668699',
-    // The position in the collection at which to start the list of results (startIndex)
-    offset: 0,
-    // The maximum number of elements to return with this request (Max 40) (maxResults)
-    limit: 10,
-    // Restrict results to books or magazines (or both) (printType)
-    type: 'all',
-    // Order results by relevance or newest (orderBy)
-    order: 'relevance',
-    // Restrict results to a specified language (two-letter ISO-639-1 code) (langRestrict)
-    lang: 'en'
-};
 
 router.get('/', async (req, res) => {
     const books = []
@@ -100,7 +74,7 @@ router.get('/', async (req, res) => {
                     url: newURL
                 })
                 
-                console.log(responseShelf.data)
+                // console.log(responseShelf.data)
             }else{
                 console.log('Not personal Shelf')
             }
@@ -112,19 +86,22 @@ router.get('/', async (req, res) => {
         // responseShelf = oAuth2Client.request({newURL})
         responseShelf.data.items.forEach(book => {
     
-        var newBook = new Book({
-            title: book.volumeInfo.title,
-            author: book.volumeInfo.authors,
-            publishDate: new Date(book.volumeInfo.publishedDate),
-            pageCount: book.volumeInfo.pageCount,
-            coverImageName: book.volumeInfo.imageLinks.smallThumbnail,
-            description: book.volumeInfo.description
-        })
+            var newBook = new Book({
+                id: book.id,
+                title: book.volumeInfo.title,
+                author: book.volumeInfo.authors,
+                publishDate: new Date(book.volumeInfo.publishedDate),
+                pageCount: book.volumeInfo.pageCount,
+                coverImageName: book.volumeInfo.imageLinks.smallThumbnail,
+                description: book.volumeInfo.description,
+                link: 'https://books.google.co.za/books?id='+ book.id +'&redir_esc=y'
+                
+            })
 
-        console.log(newBook)
+            // console.log(newBook)
 
-        books.push(newBook)
-    });
+            books.push(newBook)
+        });
     }
 
     res.render('index', {
@@ -139,6 +116,7 @@ router.get('/login', async (req, res) => {
 
     if(!logedIn){
         oAuth2Client = await getAuthenticatedClient();
+
         
         response1 = await oAuth2Client.request({
             url: url,
@@ -155,32 +133,6 @@ router.get('/login', async (req, res) => {
     }
 
     logedIn = true
-    
-    // Make a simple request to the People API using our pre-authenticated client. The `request()` method
-    // takes an GaxiosOptions object.  Visit https://github.com/JustinBeckwith/gaxios
-    
-
-    
-    
-
-    // var url = API_BASE_URL + defaultOptions.uid +'/bookshelves/1001/volumes?key=' +defaultOptions.key
-    
-
-    // parsed["items"].forEach(book => {
-    
-    //     var newBook = new Book({
-    //         title: book.volumeInfo.title,
-    //         author: book.volumeInfo.authors,
-    //         publishDate: new Date(book.volumeInfo.publishedDate),
-    //         pageCount: book.volumeInfo.pageCount,
-    //         coverImageName: book.volumeInfo.imageLinks.smallThumbnail,
-    //         description: book.volumeInfo.description
-    //     })
-
-    //     console.log(newBook)
-
-    //     books.push(newBook)
-    // });
 
     res.redirect('/')
 

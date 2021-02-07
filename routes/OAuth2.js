@@ -60,6 +60,7 @@ function getAuthenticatedClient() {
         // open the browser to the authorize url to start the workflow
         open(authorizeUrl, {wait: false}).then(cp => cp.unref());
       });
+    
     destroyer(server);
   });
 }
