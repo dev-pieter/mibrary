@@ -115,6 +115,7 @@ router.get('/', async (req, res) => {
 router.get('/login', async (req, res) => {
 
     if(!logedIn){
+        console.log('YES')
         oAuth2Client = await getAuthenticatedClient();
 
         
