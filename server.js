@@ -6,6 +6,10 @@ const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
+const cors = require('cors')
+const passport = require('passport')
+const cookieSession = require('cookie-session')
+const session = require('express-session')
 
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors')
@@ -17,6 +21,22 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
+app.use(bodyParser.json())
+app.use(cors())
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true }
+  }))
+app.use(passport.initialize());
+app.use(passport.session());
+
+// app.use(cookieSession({
+//     name: 'mibrary-session',
+//     keys: ['key1' , 'key2']
+
+// }))
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL, {
@@ -34,4 +54,4 @@ app.use('/books', bookRouter )
 
 app.locals.logedIn
 
-app.listen(process.env.PORT || 3001 )
+app.listen(process.env.PORT || 3000 )

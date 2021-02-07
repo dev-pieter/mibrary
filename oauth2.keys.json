@@ -1,1 +1,12 @@
-{"web":{"client_id":"512409493412-p8em5bgu9urlf0hg0gpn0qj7fssd9pis.apps.googleusercontent.com","project_id":"mibrary-303806","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"ycFHTbcuhkK_Qg9AMjePZmwt","redirect_uris":["http://localhost:3000/oauth2callback"]}}
+{
+    "type": "service_account",
+    "project_id": "mibrary-303806",
+    "private_key_id": "ccd9b9b74beba52dda07ca5fef3d2d7c1c2cc69d",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCorO3lFKOy/uSh\nX4vwp/deHtZKONf7wExQzGak3qlW7CQ1wgSjyRrxQzo2Kf0A2bsaUO/svcnB9Oma\nSSao0b6OOTe8fpN+v2sTa+rhPmGmVdcNTUPvGx84lor0jUzpRKgofkVXbG3br8nG\nVXswoK5A5Z7NSzJABrkoe0QKOuL/Dw1MvYRBlZ24CkvRXTbz3wk/BSLLnponxbJ1\n6y7j8L8afjOFgqaeL7IHtZkKGoSknqGH3Shih+O1He34cGBFR74kHVbYTIQQgWoz\n0FqoTZslqFLlkJ36A9xAi1eN3bbevjqofxy8thZKIVc3cnNdemKA6jDH9gTquZxp\nn65+U4+VAgMBAAECggEACzMONEgPoB55+41T8JWVIFqfo6Z3ZW0MyXmaNXII9YSb\ng+E/Eck+y3bz/22AHGVt3aRdmyRf0su/k0xY74Zw+/xTFdDOsMX7ZqWjSbOCDtCu\nGnaUnzniXmK/1QHTxzzqhbkamAsoQS5Vu/WS3B/zFKEvudWiFMENhramhh+yUOPT\n3k90/mZ494itXU30p7bDOc/6r7hFV4RIgq1MiRyZCwErIYNIFCQZ0aVmOZOOizXj\nhf5oe5bOOdduM4+X1kdbyUwW15PV3nuim91B39DmE/iRp+i8thdMPuJsXn5D4T2C\nSDJUqogWhehOtI2pxjWA8G/fJ0643vRqBGIU5HcuMQKBgQDgJDpktA61HKzzQNVz\nsWgFCR+gJ/nJZHBGMnVgqVvcmFMej0+1BkyD0zyEw/LyBkw0F6uVjOPbLoErGas6\nTt5XNo2mo/WF8yg5JQNo7Js7ZADA8vT67oCtDC6Mpkx7dp7y8W9Vj5ItDeL1dyqy\nK54/jc/TT2A1t8HMPYj2Q6DVRQKBgQDApnnCzwDg/OOKnxJ/1/NYcWH0GoAgJN0o\n+3n4WPrSG6vo6SxJFcfvIMkyEFOt7g6mVcwNMblwcB6nTuUwINjatrfWYtNnlKTA\nEnX8ubb6m8DrQo0qxjVf74ZRS42fE54OPUnm2HUFjFfCzn2siutSLhZz0QGeA/Mp\niMvdbrcuEQKBgFCatqUgW2mmNkwENL62PcIR1d2ygpF6HSYhXzSzsuVRohKLVw6y\nhTGi9VCJZwTCXwUcvge58vcPckQdpwYA9tRGOgqDS/gvyXdDaEaDUA+7lsnMlWzn\n+D5C8zqBU1/S+LZFPNR4HQk2xTeg8ym/pdkVFnfXQ7INsxPPzUFCcMRBAoGAcuna\nb21ypMG0KJfCPSffK75WI3k7O/FBSpTWqGDLHFENNh0AIYgwfl8cJBTBFVqOuoEq\n+iPS7VKztjDFXPP65ltfRS4l0/9CVp+saVeN4ebOKIbGFeGtLNB/Wjaq/1yARxYf\n4ubyxqB0KOtq42TqAVckZWkigdLxVLEYibjk40ECgYEAq5HE6gDhyMCXBXVCr3QY\njM0ZeOK/NvVk/sX5oerxI2S/Aj52D6aSzXAOEA0v0+HYW/4pNJrVd5Met6EfdTWa\nB4UG3rUXol7Keecaf2Y3+i3dMxX0qK4DDuoaMPjHtw8zebVyxRB65zsu7tpSbrtc\nm/gIvhLo2MzT9m2M/Xzmi9k=\n-----END PRIVATE KEY-----\n",
+    "client_email": "mibrary@mibrary-303806.iam.gserviceaccount.com",
+    "client_id": "117133692529961547443",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mibrary%40mibrary-303806.iam.gserviceaccount.com"
+  }
