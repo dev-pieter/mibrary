@@ -1,26 +1,30 @@
+
 <h2>Search Books</h2>
 <form action="/books" method="GET">
     <label for="">Title</label>
-    <input type="text" name="title" value="<%= searchOptions.title %>"></input>
+    <input type="text" name="title" value=""></input>
     <button type="submit">Search</button>
 </form>
 <br></br>
-<div class="container-fluid">
+<div class="container-fluid" style="width: 100%; text-align: center; justify-content: center;">
     <div class="row">
-        <% books.forEach(book => { %>
-            <div class="col-sm-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="<%= book.coverImagePath %>" class="card-img-top" alt="<%= book.coverImageName %>">
+        <% for (var i = 0; i < books.length; ++i ) {%>
+            <div class="col-sm-4" style="padding: 20px;">
+                <div class="card align-items-center" style="width: 18rem; background: whitesmoke; margin: auto;">
+                    <img src="<%= books[i].coverImageName%>" class="card-img-top" style="width: 100px; height: 150px;" alt="<%= books[i].title%>">
                     <div class="card-body">
-                      <h5 class="card-title"><%= book.title %></h5>
-                      <p class="card-text"><%= book.description %></p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                      <h5 class="card-title"><%= books[i].title%></h5>
+                      <p class="card-text book"><%= books[i].description %></p>
+                      <a href="<%= books[i].link%>" target="_blank" class="btn btn-primary">View</a>
                     </div>
                 </div>
-
-                <!-- <img src="uploads/bookCovers/<%= book.coverImageName %>" alt="<%= book.coverImageName %>" style="width: 200px;">
-                <a href=""><%= book.title %></a> -->
             </div>
-        <% }) %>
+        <% } %>
     </div>
 </div>
+<style>
+    .book {
+        height: 120px;
+        overflow: scroll;
+    }
+</style>

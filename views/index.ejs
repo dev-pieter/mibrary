@@ -1,32 +1,28 @@
-
 <span style="text-align: center; align-items: center;">
     <br/>
-    <h2>My Book Shelf</h2>
+    <h2><%= shelf%></h2>
     <br></br>
     <div class="container-fluid" style="width: 100%;">
         <div class="row">
             <% for (var i = 0; i < books.length; ++i ) {%>
                 <div class="col-sm-4" style="padding: 20px;">
-                    <div class="card align-items-center" style="width: 18rem; background: whitesmoke; padding: 10px;">
-                        <img src="<%= books[i].coverImageName%>" class="card-img-top" style="width: 100px; height: 150px;" alt="<%= books[i].title%>">
+                    <div class="card align-items-center" style="width: 18rem; background: whitesmoke; margin: auto;">
+                        <img src="<%= books[i].coverImageName%>" class="card-img-top" style="width: 150px; height: 225px; margin: 10px;" alt="<%= books[i].title%>">
                         <div class="card-body">
                           <h5 class="card-title"><%= books[i].title%></h5>
                           <p class="card-text book"><%= books[i].description %></p>
-                          <a href="<%= books[i].link%>" class="btn btn-primary">View</a>
+                          <a href="<%= books[i].link%>" target="_blank" class="btn btn-primary">View</a>
                         </div>
                     </div>
                 </div>
             <% } %>
+            
         </div>
     </div>
 </span>
-
 <style>
     .book {
-        height: 100px;
-        border: 1px solid black;
-        border-radius: 10px;
+        height: 120px;
         overflow: scroll;
-        text-overflow: ellipsis;
     }
 </style>

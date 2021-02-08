@@ -23,6 +23,7 @@ var responseShelf
 const url = 'https://www.googleapis.com/books/v1/mylibrary/bookshelves';
 
 const keys = require('../oauth2.keys.json')
+const { error } = require('console')
 const scopes = 'https://www.googleapis.com/auth/books' 
 
 const oauthClient = new google.auth.OAuth2({
@@ -38,7 +39,7 @@ const isLoggedIn = (req, res, next) => {
         console.log(req.user)
         next()
     }else {
-        res.redirect('/google')
+        res.redirect('/login')
     }
 }
 
@@ -93,8 +94,14 @@ router.get('/google/failure', (req, res) => {
 router.get('/logout', (req, res) =>{
     req.session = null
     req.logout()
-    res.redirect('/')
+    logedIn = false
+    res.redirect('/login')
 })
+
+router.get('/empty-bookshelf', (req, res) => {
+    res.render('emptyBookshelf')
+})
+
 
 router.get( '/google/callback',
     passport.authenticate( 'google', {failureRedirect: '/google/failure'}), 
@@ -104,32 +111,65 @@ router.get( '/google/callback',
 
 router.get('/', isLoggedIn, async (req, res) => {
     var books = []
+    var shelf
+    var noShelf = false
 
     // oauthClient.credentials = {
     //     access_token: req.user.accessToken
     // }
+        try {
+            responseShelf = await google.books('v1').mylibrary.bookshelves.get({
+                shelf: '1001',
+                access_token: req.user.accessToken
+            })
+        } catch (error) {
+            console.log(error)
+            noShelf = true
+            res.redirect('/empty-bookshelf')
+        }
 
-    response1 = await google.books('v1').mylibrary.bookshelves.volumes.list({
-        shelf: '1001',
-        access_token: req.user.accessToken
-    })
-
-    response1.data.items.forEach(book => {
-        var newBook = new Book({
-                        id: book.id,
-                        title: book.volumeInfo.title,
-                        author: book.volumeInfo.authors,
-                        publishDate: new Date(book.volumeInfo.publishedDate),
-                        pageCount: book.volumeInfo.pageCount,
-                        coverImageName: book.volumeInfo.imageLinks.smallThumbnail,
-                        description: book.volumeInfo.description,
-                        link: 'https://books.google.co.za/books?id='+ book.id +'&redir_esc=y'
-                        
-                    })
-        books.push(newBook)
+        try {
+            response1 = await google.books('v1').mylibrary.bookshelves.volumes.list({
+                shelf: '1001',
+                access_token: req.user.accessToken
+            })
+        } catch (error) {
+            console.log(error)
+            noShelf = true
+            res.redirect('/empty-bookshelf')
+        }
         
-    })
-    console.log(books)
+    
+        
+
+        
+        
+        if(!noShelf){
+            console.log('yes')
+            response1.data.items.forEach(book => {
+                var newBook = new Book({
+                                id: book.id,
+                                title: book.volumeInfo.title,
+                                author: book.volumeInfo.authors,
+                                publishDate: new Date(book.volumeInfo.publishedDate),
+                                pageCount: book.volumeInfo.pageCount,
+                                coverImageName: book.volumeInfo.imageLinks.smallThumbnail,
+                                description: book.volumeInfo.description,
+                                link: 'https://books.google.co.za/books?id='+ book.id +'&redir_esc=y'
+                                
+                            })
+            
+                books.push(newBook)
+                
+            })
+
+            shelf = responseShelf.data.title
+            console.log(books)
+        }else{
+            
+        }
+        
+
     
     
 
@@ -174,37 +214,14 @@ router.get('/', isLoggedIn, async (req, res) => {
 
     res.render('index', {
         books: books, 
-        logedIn: logedIn
+        shelf: shelf ?  shelf : null
     })
 
 
 })
 
 router.get('/login', async (req, res) => {
-
-    if(!logedIn){
-        console.log('YES')
-        oAuth2Client = await getAuthenticatedClient();
-
-        
-        response1 = await oAuth2Client.request({
-            url: url,
-        });
-        console.log(response1.data);
-
-        // After acquiring an access_token, you may want to check on the audience, expiration,
-        // or original scopes requested.  You can do that with the `getTokenInfo` method.
-        const tokenInfo = await oAuth2Client.getTokenInfo(
-            oAuth2Client.credentials.access_token
-        );
-        console.log(tokenInfo);
-
-    }
-
-    logedIn = true
-
-    res.redirect('/')
-
+    res.render('login')
 })
 
 module.exports = router
