@@ -4,6 +4,13 @@
     <br></br>
     <div class="container-fluid" style="width: 100%;">
         <div class="row">
+            <% if (empty) {%>
+                <div style="width: 100%;">
+                    <p>Empty Shelf</p>
+                    <br/>
+                    <a href="/books" target="_blank" class="btn btn-primary">Add Books</a>
+                </div>
+            <% } %>
             <% for (var i = 0; i < books.length; ++i ) {%>
                 <div class="col-sm-4" style="padding: 20px;">
                     <div class="card align-items-center" style="width: 18rem; background: whitesmoke; margin: auto;">

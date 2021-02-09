@@ -36,7 +36,6 @@ const oauthClient = new google.auth.OAuth2({
 const isLoggedIn = (req, res, next) => {
     if(req.user){
         logedIn = true
-        console.log(req.user)
         next()
     }else {
         res.redirect('/login')
@@ -113,6 +112,7 @@ router.get('/', isLoggedIn, async (req, res) => {
     var books = []
     var shelf
     var noShelf = false
+    var empty = false
 
     // oauthClient.credentials = {
     //     access_token: req.user.accessToken
@@ -122,6 +122,7 @@ router.get('/', isLoggedIn, async (req, res) => {
                 shelf: '1001',
                 access_token: req.user.accessToken
             })
+            shelf = responseShelf.data.title
         } catch (error) {
             console.log(error)
             noShelf = true
@@ -136,15 +137,21 @@ router.get('/', isLoggedIn, async (req, res) => {
         } catch (error) {
             console.log(error)
             noShelf = true
-            res.redirect('/empty-bookshelf')
+            res.redirect('/books')
         }
+
+        console.log(response1.data.totalItems)
         
     
-        
+        if(response1.data.totalItems == 0){
+            noShelf = true
+            empty = true
+            console.log('no Books')
+        }
 
         
         
-        if(!noShelf){
+        if(!noShelf && !empty){
             console.log('yes')
             response1.data.items.forEach(book => {
                 var newBook = new Book({
@@ -163,7 +170,6 @@ router.get('/', isLoggedIn, async (req, res) => {
                 
             })
 
-            shelf = responseShelf.data.title
             console.log(books)
         }else{
             
@@ -214,7 +220,8 @@ router.get('/', isLoggedIn, async (req, res) => {
 
     res.render('index', {
         books: books, 
-        shelf: shelf ?  shelf : null
+        shelf: shelf ?  shelf : null,
+        empty: empty
     })
 
 
