@@ -79,7 +79,7 @@ const isLoggedIn = (req, res, next) => {
 
 router.get('/google',
   passport.authenticate('google', { scope:
-      [ 'email', 'profile', 'https://www.googleapis.com/auth/books' ] }
+      [ 'email', 'profile', 'https://www.googleapis.com/auth/books' ], prompt : "select_account" }
 ));
 
 router.get('/google/success', isLoggedIn, (req, res) => {
