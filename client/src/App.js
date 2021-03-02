@@ -6,7 +6,7 @@ import Book from './Books/Books';
 import BookSearch from './BookSearch/BookSearch';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container, Row } from 'react-bootstrap';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Switch,
   Route,
   NavLink,
@@ -44,7 +44,7 @@ function App() {
     if(!login.books){
       async function getBooks() {
         let books;
-        await axios.get(`http://localhost:9000/${login.token.access_token}/books`)
+        await axios.get(`http://13.244.138.249:3000/${login.token.access_token}/books`)
           .then(res => {
             console.log(res.data.data.items);
             books = res.data.data.items;

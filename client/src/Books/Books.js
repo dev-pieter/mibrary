@@ -8,7 +8,7 @@ export default function Books({bookId, bookObj , search = false, at = 0}) {
     var random_color = colors[Math.floor(Math.random() * colors.length)];
 
     async function addBook() {
-        await axios.get(`http://localhost:9000/${at}/${bookId}/add`)
+        await axios.get(`http://13.244.138.249:3000/${at}/${bookId}/add`)
           .then(res => {
             console.log(res);
             search = false;

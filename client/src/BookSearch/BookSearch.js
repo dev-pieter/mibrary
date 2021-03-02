@@ -10,7 +10,7 @@ export default function BookSearch({at}) {
     async function eff(params) {
         async function getBooks() {
         let books;
-        await axios.get(`http://localhost:9000/books/${params}`)
+        await axios.get(`http://13.244.138.249:3000/books/${params}`)
           .then(res => {
             console.log(res.data.data.items);
             books = res.data.data.items;
