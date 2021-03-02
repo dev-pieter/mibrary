@@ -4,6 +4,9 @@ import Auth from './Auth/Auth';
 import LogoutButton from './Auth/LogoutButton';
 import Book from './Books/Books';
 import BookSearch from './BookSearch/BookSearch';
+import Shelf from './Home/Shelf'
+import SecureRoute from './Auth/SecureRoute';
+import BookView from './Books/BookView';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container, Row } from 'react-bootstrap';
 import {
   BrowserRouter as Router,
@@ -13,31 +16,12 @@ import {
   Redirect
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './app.css';
-
-const auth = {
-  isLoggedIn : false,
-  onAuth () {
-    this.isLoggedIn = true;
-  },
-  onLogout () { 
-    this.isLoggedIn = false;
-  },
-  getStatus ()  { return this.isLoggedIn;}
-}
-
-function SecureRoute({children, ...rest}) {
-  return(
-    <Route {...rest} render={() => rest.login.loggedIn ? (
-      children)
-      : (<Redirect to={{pathname : '/'}}></Redirect>)
-    }></Route>
-  )
-}
+import './css/app.css';
 
 
 function App() {
   const [login, setLogin] = useState({profile: 0, token: 0, books: 0, loggedIn: false});
+  const [viewState, setViewState] = useState({view : "shelf", bookId : 0});
 
   useEffect(async () => {
     let booksArr;
@@ -83,20 +67,17 @@ function App() {
             <Auth loginHandle={setLogin}></Auth>
           </Route>
           <SecureRoute path='/home' login={login}>
-            <Container fluid>
-            <div style={{height: '15vh', width:'100%', textAlign: 'center'}}>
-              <br></br>
-              <h1>Mi Books</h1>
-            </div>
-              <Row>
-                <div style={{width: '100%', overflowX: 'scroll', display: 'flex'}}>
-                {typeof login.books === 'object' ? login.books.map((item) => (<Book key={item.id} bookObj={item.volumeInfo}>{item.id}</Book>)) : 'Loading...'}  
-                </div>
-              </Row>
-            </Container>
+            {viewState.view === "shelf" 
+            ? <Shelf books={login.books} setViewState={setViewState}></Shelf>
+            : null}
+            {viewState.view === "book" 
+            ? <BookView bookId={viewState.bookId} setViewState={setViewState}></BookView>
+            : null}
+            {/* Reading List (like Todo) */}
+            {/* NY Times Recomendations */}
           </SecureRoute>
           <SecureRoute path='/books' login={login}>
-              <BookSearch at={login.token.access_token}></BookSearch>
+            <BookSearch at={login.token.access_token}></BookSearch>
           </SecureRoute>
       </div>
       </Router>

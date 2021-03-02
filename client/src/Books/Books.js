@@ -3,7 +3,7 @@ import axios from 'axios';
 import placeholder from '../images/placeholder.png'
 import { Card, Button } from 'react-bootstrap';
  
-export default function Books({bookId, bookObj , search = false, at = 0}) {
+export default function Books({bookId, bookObj , search = false, at = 0, setViewState = 0}) {
     var colors = ['primary', 'success', 'info', 'warning', 'danger'];
     var random_color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -14,6 +14,10 @@ export default function Books({bookId, bookObj , search = false, at = 0}) {
             search = false;
             alert('Book Added Successfully');
           })
+    }
+
+    function setView(){
+        setViewState({view : "book", bookId : bookId});
     }
 
         return (
@@ -29,7 +33,7 @@ export default function Books({bookId, bookObj , search = false, at = 0}) {
                     </Card.Text>
                     {search 
                     ? <Button variant={random_color}><a onClick={addBook} target='_blank' style={{textDecoration: 'none', color: 'white'}}>Add to Mibrary</a></Button>
-                    : <Button variant={random_color}><a href={bookObj.previewLink} target='_blank' style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
+                    : <Button variant={random_color}><a onClick={setView} style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
                     }   
                 </Card.Body>
                 </Card>
