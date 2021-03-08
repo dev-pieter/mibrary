@@ -3,23 +3,23 @@ import axios from 'axios';
 import Book from '../Books/Books';
 import { Container, Row } from 'react-bootstrap';
 
-export default function BookSearch({at}) {
+export default function BookSearch({at, setLogin, login, setViewState}) {
     const [value, setValue] = useState("");
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState({b: 0});
 
     async function eff(params) {
         async function getBooks() {
-        let books;
+        let books1;
         await axios.get(`http://13.244.138.249:3000/books/${params}`)
           .then(res => {
             console.log(res.data.data.items);
-            books = res.data.data.items;
+            books1 = res.data.data.items;
           })
-        return books;
+        return books1;
       };
   
       let booksArr = await getBooks();
-      setBooks(booksArr);
+      setBooks({b: booksArr});
     }
     
     function submit(e){
@@ -29,7 +29,11 @@ export default function BookSearch({at}) {
 
     return (
         <Container fluid>
-            <Row style={{display : 'flex', justifyContent: 'center', padding: '20px'}}>
+            <Row style={{display : 'flex', justifyContent: 'center', padding: '20px', textAlign: 'center'}}>
+                <div>
+                <br/>
+                <h2>Search Through 1000's of Books</h2>
+                <br/>
                 <form className="searchForm">
                     <input
                         className="search"
@@ -40,9 +44,10 @@ export default function BookSearch({at}) {
                         onChange={submit}
                     />
                 </form>
+                </div>
             </Row>
             <Row style={{width: '100%'}}>
-                {typeof books === 'object' ? books.map((item) => (<Book key={item.id} bookId={item.id} bookObj={item.volumeInfo} search={true} at={at}>{item.id}</Book>)) : 'Loading...'}  
+                {typeof books.b === 'object' ? books.b.map((item) => (<Book setLogin={setLogin} login={login} bookId={item.id} bookItem={item} bookObj={item.volumeInfo} setViewState={setViewState} search={true} at={at}>{item.id}</Book>)) : null}  
             </Row>
         </Container>
     )

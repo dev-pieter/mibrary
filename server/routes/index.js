@@ -53,6 +53,23 @@ router.get('/:at/:id/add', async (req, res) => {
   }
 });
 
+router.get('/:at/:id/remove', async (req, res) => {
+  const {at, id} = req.params;
+
+  try {
+    response1 = await google.books('v1').mylibrary.bookshelves.removeVolume({
+      shelf: '1001',
+      access_token: at,
+      volumeId: id,
+    })
+
+    res.status(200).send('Book removed Successfully');
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: `${error}`});
+  }
+});
+
 module.exports = router;
 var express = require('express');
 var router = express.Router();

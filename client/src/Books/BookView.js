@@ -35,12 +35,13 @@ export default function BookView({bookId, setViewState = 0}) {
     return (
         <Container fluid>
             <br/>
-            <Button onClick={setState}>{"<"}</Button>
+            <Button style={{background: "black", borderColor: "black", margin: "25px", boxShadow: "3px 3px grey"}} onClick={setState}>{"<"}</Button>
             <Row style={{padding : "40px"}}>
                 <Col style={{textAlign: "center"}}>
+                    <br/>
                     {item === 0 || item.imageLinks === undefined
-                    ? <Image style={{width: "250px", boxShadow: "10px 10px grey"}} src={placeholder}></Image> 
-                    : <Image style={{width: "250px", boxShadow: "10px 10px grey"}} src={item.imageLinks.thumbnail}></Image>}
+                    ? <Image style={{width: "250px", boxShadow: "10px 10px 6px grey"}} src={placeholder}></Image> 
+                    : <Image style={{width: "250px", boxShadow: "10px 10px 6px grey"}} src={item.imageLinks.thumbnail}></Image>}
                 </Col>
                 <Col xs={8}>
                     <h1>{item.title}</h1>
@@ -48,8 +49,9 @@ export default function BookView({bookId, setViewState = 0}) {
                     <div dangerouslySetInnerHTML={{__html: item.description}}></div>
                     <br></br>
                     <div style={{display: 'flex'}}>
-                        <Button onClick={setState}>Buy Book</Button>
-                        <Button onClick={setState}>Cancel</Button>
+                        <Button variant="info" href={item.infoLink} target="_blank">Buy Book</Button>
+                        <div style={{width: "10px"}}/>
+                        <Button variant="danger" onClick={setState}>Cancel</Button>
                     </div>
                 </Col>
             </Row>
