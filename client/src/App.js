@@ -16,18 +16,21 @@ import {
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/app.css';
+import library from './Assets/book.png';
+import search from './Assets/loupe.png';
 
 
 function App() {
   const [login, setLogin] = useState({profile: 0, token: 0, books: 0, loggedIn: false});
   const [viewState, setViewState] = useState({view : "shelf", bookId : 0});
+  const [books, setBooks] = useState({b: 0});
 
   useEffect(async () => {
     let booksArr;
     if(!login.books || login.books === undefined){
       async function getBooks() {
           let books;
-          await axios.get(`http://13.244.138.249:3000/${login.token.access_token}/books`)
+          await axios.get(`https://goodoakfurniture.co.za/${login.token.access_token}/books`)
             .then(res => {
               console.log(res);
               if(!res.data.data.totalItems){
@@ -50,19 +53,17 @@ function App() {
       <Router>
       <div className="App">
         {/* Navigation */}
-        <header className="App-header">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/" style={{display: 'flex'}}><h3 style={{color: 'white', background:'black', borderRadius: '5px', padding: '8px'}}>Mi</h3></Navbar.Brand>
+        <Navbar expand="lg" sticky="top" >
+          <Navbar.Brand href="/" style={{display: 'flex'}}><h3 style={{color: 'black', background:'white', borderRadius: '5px', padding: '8px'}}>Mi</h3></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link><NavLink to='/home' style={{textDecoration: 'none', color: 'black'}}>Home</NavLink></Nav.Link>
-              <Nav.Link><NavLink to='/books' style={{textDecoration: 'none', color: 'black'}}>Book Search</NavLink></Nav.Link>
+              <Nav.Link><NavLink className='nv-icon' to='/home'><i className="fas fa-book-reader" style={{fontSize : '1rem', margin : '6px'}}></i>Library</NavLink></Nav.Link>
+              <Nav.Link><NavLink className='nv-icon' to='/books'><i className="fas fa-search" style={{fontSize : '1rem', margin : '6px'}}></i>Book Search</NavLink></Nav.Link>
             </Nav>
             {login.loggedIn ? <LogoutButton auth={setLogin}>Logout</LogoutButton> : null}
           </Navbar.Collapse>
         </Navbar>
-        </header>
 
         {/* body */}
           <Route exact path='/'>
@@ -84,7 +85,7 @@ function App() {
           </SecureRoute>
           <SecureRoute path='/books' login={login}>
             {viewState.view === "shelf" 
-            ? <BookSearch at={login.token.access_token} setLogin={setLogin} setViewState={setViewState} login={login}></BookSearch>
+            ? <BookSearch books={books} setBooks={setBooks} at={login.token.access_token} setLogin={setLogin} setViewState={setViewState} login={login}></BookSearch>
             : null}
             {viewState.view === "book" 
             ? <BookView bookId={viewState.bookId} setViewState={setViewState}></BookView>

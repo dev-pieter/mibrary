@@ -1,0 +1,12 @@
+@media only screen and (max-width: 600px) {
+    .col-8 {
+        text-align: center;
+        padding-top: 25px;
+        flex: 0 0 100%;
+        min-width: 100%;
+    }
+
+    .view-image {
+        max-width: 150px;
+    }
+  }

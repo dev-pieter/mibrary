@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Book from '../Books/Books';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
-export default function BookSearch({at, setLogin, login, setViewState}) {
+export default function BookSearch({books, setBooks, at, setLogin, login, setViewState}) {
     const [value, setValue] = useState("");
-    const [books, setBooks] = useState({b: 0});
+    // const [books, setBooks] = useState({b: 0});
 
     async function eff(params) {
         async function getBooks() {
         let books1;
-        await axios.get(`http://13.244.138.249:3000/books/${params}`)
+        await axios.get(`https://goodoakfurniture.co.za/books/${params}`)
           .then(res => {
             console.log(res.data.data.items);
             books1 = res.data.data.items;
@@ -46,8 +46,10 @@ export default function BookSearch({at, setLogin, login, setViewState}) {
                 </form>
                 </div>
             </Row>
-            <Row style={{width: '100%'}}>
+            <Row style={{width: '100vw', overflowX: 'scroll'}}>
+                <Col style={{width: '100vw', display: 'flex'}}>
                 {typeof books.b === 'object' ? books.b.map((item) => (<Book setLogin={setLogin} login={login} bookId={item.id} bookItem={item} bookObj={item.volumeInfo} setViewState={setViewState} search={true} at={at}>{item.id}</Book>)) : null}  
+                </Col>
             </Row>
         </Container>
     )

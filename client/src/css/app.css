@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap');
 
 body {
+    background: rgb(43, 43, 43);
     font-family: 'Shippori Mincho', serif;
+    color: white;
+}
+
+.nv-icon {
+    text-decoration: none;
+    color: white;
+    transition : text-decoration-line 0.2s;
+}
+
+.nv-icon:hover {
+    text-decoration: none;
+    color: white;
+    text-decoration-line: underline;
+}
+
+.App h1 {
+    color: white;
 }

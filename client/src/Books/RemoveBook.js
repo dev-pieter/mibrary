@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function RemoveBook({login, setLogin, setViewState, bookId, at}) {
     
     async function removeBook() {
-            await axios.get(`http://13.244.138.249:3000/${at}/${bookId}/remove`)
+            await axios.get(`https://goodoakfurniture.co.za/${at}/${bookId}/remove`)
             .then(res => {
                 console.log(res);
                 const arrBooks = login.books;

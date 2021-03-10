@@ -3,6 +3,7 @@ import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import placeholder from '../images/placeholder.png';
 import axios from 'axios';
 import parse from 'html-react-parser';
+import '../css/BookView.css'
 
 const baseUri = "https://www.googleapis.com/books/v1/"
 
@@ -35,16 +36,20 @@ export default function BookView({bookId, setViewState = 0}) {
     return (
         <Container fluid>
             <br/>
-            <Button style={{background: "black", borderColor: "black", margin: "25px", boxShadow: "3px 3px grey"}} onClick={setState}>{"<"}</Button>
+            <Button style={{background: "black", borderColor: "black", margin: "25px", boxShadow: "3px 3px 10px black"}} onClick={setState}>{"<"}</Button>
             <Row style={{padding : "40px"}}>
                 <Col style={{textAlign: "center"}}>
                     <br/>
                     {item === 0 || item.imageLinks === undefined
-                    ? <Image style={{width: "250px", boxShadow: "10px 10px 6px grey"}} src={placeholder}></Image> 
-                    : <Image style={{width: "250px", boxShadow: "10px 10px 6px grey"}} src={item.imageLinks.thumbnail}></Image>}
+                    ? <Image className='view-image' style={{width: "250px", boxShadow: "0 0 10px black"}} src={placeholder}></Image> 
+                    : <Image className='view-image' style={{width: "250px", boxShadow: "0 0 10px black"}} src={item.imageLinks.thumbnail}></Image>}
                 </Col>
                 <Col xs={8}>
-                    <h1>{item.title}</h1>
+                    <h2>{item.title}</h2>
+                    <br/>
+                    {item.authors !== undefined
+                    ? <p>By {item.authors[0]}.</p>
+                    : null}
                     <br></br>
                     <div dangerouslySetInnerHTML={{__html: item.description}}></div>
                     <br></br>

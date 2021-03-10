@@ -1,0 +1,13 @@
+.phone-card {
+    width: 10rem;
+    font-size: small;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .phone-card {
+        font-size: x-small;
+        width: 8rem;
+    }
+}
