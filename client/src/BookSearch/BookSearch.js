@@ -3,17 +3,16 @@ import axios from 'axios';
 import Book from '../Books/Books';
 import { Container, Row, Col } from 'react-bootstrap';
 
-export default function BookSearch({books, setBooks, at, setLogin, login, setViewState}) {
+export default function BookSearch({books, setBooks, setLogin, login, setViewState}) {
     const [value, setValue] = useState("");
-    // const [books, setBooks] = useState({b: 0});
 
     async function eff(params) {
         async function getBooks() {
         let books1;
-        await axios.get(`https://goodoakfurniture.co.za/books/${params}`)
+        await axios.get(`https://openlibrary.org/search.json?q=${params}`)
           .then(res => {
-            console.log(res.data.data.items);
-            books1 = res.data.data.items;
+            console.log(res.data);
+            books1 = res.data.docs;
           })
         return books1;
       };
@@ -22,9 +21,18 @@ export default function BookSearch({books, setBooks, at, setLogin, login, setVie
       setBooks({b: booksArr});
     }
     
-    function submit(e){
+    function setVal(e){
         setValue(e.target.value);
-        eff(value);
+    }
+
+    function submit(e){
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const body = {};
+
+        formData.forEach((value, property) => body[property] = value);
+        setBooks({b : 0});
+        eff(body.search);
     }
 
     return (
@@ -34,21 +42,22 @@ export default function BookSearch({books, setBooks, at, setLogin, login, setVie
                 <br/>
                 <h2>Search Through 1000's of Books</h2>
                 <br/>
-                <form className="searchForm">
+                <form className="searchForm" onSubmit={submit}>
                     <input
                         className="search"
                         type="text" name="search"
                         autoComplete="off"
                         placeholder="search books"
                         value={value}
-                        onChange={submit}
+                        onChange={setVal}
                     />
+                    <input type='submit' />
                 </form>
                 </div>
             </Row>
             <Row style={{width: '100vw', overflowX: 'scroll'}}>
                 <Col style={{width: '100vw', display: 'flex'}}>
-                {typeof books.b === 'object' ? books.b.map((item) => (<Book setLogin={setLogin} login={login} bookId={item.id} bookItem={item} bookObj={item.volumeInfo} setViewState={setViewState} search={true} at={at}>{item.id}</Book>)) : null}  
+                {typeof books.b === 'object' ? books.b.slice(0, 25).map((item) => (item.isbn !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.isbn[0]} setViewState={setViewState} search={true}>{item.id}</Book> : null)) : null}  
                 </Col>
             </Row>
         </Container>

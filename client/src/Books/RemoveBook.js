@@ -2,14 +2,15 @@ import React from 'react';
 import axios from 'axios';
 
 export default function RemoveBook({login, setLogin, setViewState, bookId, at}) {
-    
     async function removeBook() {
-            await axios.get(`https://goodoakfurniture.co.za/${at}/${bookId}/remove`)
+        const arrBooks = login.books;
+        console.log(arrBooks);
+        await setLogin({...login, books : arrBooks.filter(item => item !== bookId)});
+
+
+            await axios.get(`http://localhost:3000/${login.profile._id}/${bookId}/remove`)
             .then(res => {
                 console.log(res);
-                const arrBooks = login.books;
-                let arr = arrBooks.filter(item => item.id !== bookId)
-                setLogin({...login, books : arr});
             })
     }
 

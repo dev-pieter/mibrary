@@ -1,33 +1,119 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap'
 import { GoogleLogin } from 'react-google-login';
 import { Redirect } from 'react-router-dom';
 
 export default function Auth({loginHandle}) {
-    const responseGoogle = (response) => {
-        loginHandle({profile: response.profileObj, token: response.tokenObj, loggedIn: true});
-    };
+    const [view, setView] = useState('login');
+    const [info, setInfo] = useState({username : '', password : ''});
 
-    const responseFailure = (response) => {
-        console.log(response);
-    };
+    // const responseGoogle = (response) => {
+    //     loginHandle({profile: response.profileObj, loggedIn: true});
+    // };
 
-    return (
-        <Container>
-            <Row style={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
-                <div style={{padding: '40px'}}>
-                    <h4>Please Log in to view your content</h4>
-                    <GoogleLogin
-                        clientId="512409493412-p8em5bgu9urlf0hg0gpn0qj7fssd9pis.apps.googleusercontent.com"
-                        buttonText="Login"
-                        scope="https://www.googleapis.com/auth/books"
-                        onSuccess={responseGoogle}
-                        onFailure={responseFailure}
-                        cookiePolicy={'single_host_origin'}
-                        isSignedIn={true}
-                    />
-                </div>
-            </Row>
-        </Container>
-    )
+    // const responseFailure = (response) => {
+    //     console.log(response);
+    // };
+
+    async function request(obj){
+        let object;
+        object = await axios.post(`http://localhost:3000/login`, obj);
+        return object;
+    }
+
+    async function requestRegister(obj){
+        let object;
+        object = await axios.post(`http://localhost:3000/register`, obj);
+        return object;
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        const formData = new FormData(e.target);
+        const body = {};
+
+        if(info.username === '' || info.password === ''){
+            alert('Username or Password cannot be blank.')
+        }else{
+            formData.forEach((value, property) => body[property] = value);
+
+            if(view=== 'login'){
+                const object = await request(body);
+                console.log(object.status);
+
+                if(!object.data.found){
+                    alert('Incorrect username or password. Please try again.');
+                }else{
+                    loginHandle({profile: object.data, books: object.data.books, loggedIn: true}); 
+                }
+            }else if(view === 'register'){
+                const object = await requestRegister(body);
+                if(!object.data.found){
+                    alert('Unsuccessful register');
+                }else{
+                    alert('Welcome ' + info.username + '. Please log in to continue');
+                    setView('login');
+                }
+            }
+        }
+    }
+
+    function handleUsername(val){
+        setInfo({...info, username : val.target.value});
+    }
+
+    function handlePassword(val){
+        setInfo({...info, password : val.target.value});
+    }
+
+    if(view === 'login'){
+        return (
+            <Container>
+                <Row style={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
+                    <div style={{padding: '40px'}}>
+                        <h4>Please Log in to view your content</h4>
+                        <br/>
+                        <form onSubmit={handleSubmit}>
+                            <label>
+                            User Name:<br/>
+                            <input name="username" type="text" value={info.username} onChange={handleUsername} />
+                            </label><br/>
+                            <label>
+                            Password:<br/>
+                            <input name="password" type="text" value={info.password} onChange={handlePassword} />
+                            </label><br/>
+                            <input type="submit" value="Login"/>
+                        </form>
+                        <br/>
+                        <p>Not registered?</p>
+                        <button onClick={() => setView('register')}>Register</button>
+                    </div>
+                </Row>
+            </Container>
+        )
+    }else if(view === 'register'){
+        return(
+            <Container>
+                <Row style={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
+                    <div style={{padding: '40px'}}>
+                        <h4>Please enter a username and password</h4>
+                        <br/>
+                        <form onSubmit={handleSubmit}>
+                            <label>
+                            User Name:<br/>
+                            <input name="username" type="text" value={info.username} onChange={handleUsername} />
+                            </label><br/>
+                            <label>
+                            Password:<br/>
+                            <input name="password" type="text" value={info.password} onChange={handlePassword} />
+                            </label><br/>
+                            <input type="submit" value="Register"/>
+                        </form>
+                    </div>
+                </Row>
+            </Container>
+        )
+    }
+    
 }

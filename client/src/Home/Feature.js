@@ -10,7 +10,7 @@ import grow from '../Assets/saving-money.png';
 
 const baseUri = "https://api.nytimes.com/svc/books/v3/lists/current"
 
-export default function Feature({login, setLogin, at = 0}) {
+export default function Feature({setViewState, login, setLogin, at = 0}) {
     const [bestSellers, setBestSellers] = useState({books : [], cat : "hardcover-fiction"})
 
     useEffect(async () => {
@@ -57,7 +57,7 @@ export default function Feature({login, setLogin, at = 0}) {
                     </Col>
                     <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', margin: '0'}}>
                             {bestSellers.books.map(item => 
-                                <Books login={login} setLogin={setLogin} isbn={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0} search={true} at={at}></Books>
+                                <Books setViewState={setViewState} login={login} setLogin={setLogin} bookId={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0}></Books>
                             )}
                     </Col>
                 </Row>

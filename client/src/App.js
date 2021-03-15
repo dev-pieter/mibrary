@@ -21,33 +21,9 @@ import search from './Assets/loupe.png';
 
 
 function App() {
-  const [login, setLogin] = useState({profile: 0, token: 0, books: 0, loggedIn: false});
+  const [login, setLogin] = useState({profile: 0, books: 0, loggedIn: false});
   const [viewState, setViewState] = useState({view : "shelf", bookId : 0});
   const [books, setBooks] = useState({b: 0});
-
-  useEffect(async () => {
-    let booksArr;
-    if(!login.books || login.books === undefined){
-      async function getBooks() {
-          let books;
-          await axios.get(`https://goodoakfurniture.co.za/${login.token.access_token}/books`)
-            .then(res => {
-              console.log(res);
-              if(!res.data.data.totalItems){
-                books = [];
-              }else{
-                books = res.data.data.items;
-              }
-            })
-          return books;
-      };
-  
-      booksArr = await getBooks();
-      setLogin({...login,
-                   books: booksArr,
-      });
-    }
-  }, [login]);
 
     return (
       <Router>
@@ -73,8 +49,8 @@ function App() {
           <SecureRoute path='/home' login={login}>
             {viewState.view === "shelf" 
             ? (<>
-                <Shelf login={login} setLogin={setLogin} books={login.books} setViewState={setViewState} at={login.token.access_token}></Shelf>
-                <Feature login={login} setLogin={setLogin} at={login.token.access_token}></Feature>
+                <Shelf login={login} setLogin={setLogin} setViewState={setViewState}></Shelf>
+                <Feature login={login} setLogin={setLogin} setViewState={setViewState}></Feature> 
               </>)
             : null}
             {viewState.view === "book" 
@@ -85,13 +61,16 @@ function App() {
           </SecureRoute>
           <SecureRoute path='/books' login={login}>
             {viewState.view === "shelf" 
-            ? <BookSearch books={books} setBooks={setBooks} at={login.token.access_token} setLogin={setLogin} setViewState={setViewState} login={login}></BookSearch>
+            ? <BookSearch books={books} setBooks={setBooks} setLogin={setLogin} setViewState={setViewState} login={login}></BookSearch>
             : null}
             {viewState.view === "book" 
             ? <BookView bookId={viewState.bookId} setViewState={setViewState}></BookView>
             : null}
 
           </SecureRoute>
+          <Route path='/login-error'>
+
+          </Route>
       </div>
       </Router>
     );

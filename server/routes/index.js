@@ -1,34 +1,76 @@
 var express = require('express');
 var router = express.Router();
 const {google} = require('googleapis');
+const MongoClient = require('mongodb').MongoClient;
+const { ObjectId } = require('mongodb');
+
+//MongoDB connection
+const uri = "mongodb+srv://admin:12345@mibrarydata.v8ge1.mongodb.net/mibraryData?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+  if(err){
+    console.log(err);
+    client.close();
+  }else{
+    console.log("connected to db");
+  }
+});
 
 /* GET home page. */
-router.get('/:at/books', async (req, res) => {
-  var { at } = req.params
+router.get('/:id/books', async (req, res) => {
+  var { id } = req.params
+
+  const db = await client.db("mibraryData").collection("users");
 
   try {
-    response1 = await google.books('v1').mylibrary.bookshelves.volumes.list({
-        shelf: '1001',
-        access_token: at,
-    })
+    const response1 = await db.findOne({_id : id});
 
-    res.status(200).json(response1);
+    res.status(200).json(response1.books);
   } catch (error) {
     res.status(400).json({message: `${error}`});
   }
 
 });
 
-router.get('/books/:params', async (req, res) => {
-  const { params } = req.params;
-  
-  try {
-    response1 = await google.books('v1').volumes.list({
-      q: params,
-      maxResults: 10,
-    })
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username + ' ' + password);
 
-    res.status(200).json(response1);
+  const db = await client.db("mibraryData").collection("users");
+
+  try {
+    const response1 = await db.findOne({userName : username, password : password});
+
+    if(response1 !== null){
+      response1.found = 1;
+      res.status(200).json(response1);
+    }else{
+      res.status(200).json({found: 0});
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: `${error}`});
+  }
+
+});
+
+router.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username + ' ' + password);
+
+  const db = await client.db("mibraryData").collection("users");
+
+  try {
+    const response1 = await db.insertOne({userName : username, password : password, books : []});
+
+    if(response1 !== null){
+      response1.found = 1;
+      res.status(200).json(response1);
+    }else{
+      res.status(200).json({found: 0});
+    }
+
   } catch (error) {
     console.log(error);
     res.status(400).json({message: `${error}`});
@@ -36,34 +78,58 @@ router.get('/books/:params', async (req, res) => {
 
 });
 
-router.get('/:at/:id/add', async (req, res) => {
-  const {at, id} = req.params;
+router.get('/:uid/:bid/add-book', async (req, res) => {
+  const {uid, bid} = req.params;
+
+  const db = await client.db("mibraryData").collection("users");
 
   try {
-    response1 = await google.books('v1').mylibrary.bookshelves.addVolume({
-      shelf: '1001',
-      access_token: at,
-      volumeId: id,
-    })
+    const user = await db.findOne({_id : ObjectId(uid)});
+    
+    if(user !== null){
+      const booksArr = user.books;
+      booksArr.unshift(bid);
 
-    res.status(200).send('Book added Successfully');
+      db.updateOne({_id : ObjectId(uid)}, {$set: { books : booksArr }}, function(err, result){
+        if(err){
+          throw err;
+        }else{
+          console.log(ObjectId(uid));
+          res.status(200).send(result);
+        }
+      })
+    }else{
+      res.status(200).send(user);
+    }
+    
   } catch (error) {
     console.log(error);
     res.status(400).json({message: `${error}`});
   }
 });
 
-router.get('/:at/:id/remove', async (req, res) => {
-  const {at, id} = req.params;
+router.get('/:uid/:bid/remove', async (req, res) => {
+  const {uid, bid} = req.params;
+
+  const db = await client.db("mibraryData").collection("users");
 
   try {
-    response1 = await google.books('v1').mylibrary.bookshelves.removeVolume({
-      shelf: '1001',
-      access_token: at,
-      volumeId: id,
-    })
+    const user = await db.findOne({_id : ObjectId(uid)});
 
-    res.status(200).send('Book removed Successfully');
+    if(user !== null){
+      const booksArr = user.books;
+
+      db.updateOne({_id : ObjectId(uid)}, {$set: { books : booksArr.filter(id => id !== bid)}}, function(err, result){
+        if(err){
+          throw err;
+        }else{
+          res.status(200).send(result);
+        }
+      })
+    } else {
+      res.status(200).send(user);
+    }
+
   } catch (error) {
     console.log(error);
     res.status(400).json({message: `${error}`});

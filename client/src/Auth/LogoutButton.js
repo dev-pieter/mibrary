@@ -7,10 +7,6 @@ export default function LogoutButton({auth}) {
     }
 
     return (
-        <GoogleLogout
-            clientId="512409493412-p8em5bgu9urlf0hg0gpn0qj7fssd9pis.apps.googleusercontent.com"
-            buttonText="Logout"
-            onLogoutSuccess={logout}
-        />
+        <button onClick={logout}>Logout</button>
     )
 }
