@@ -7,6 +7,7 @@ import Shelf from './Home/Shelf'
 import SecureRoute from './Auth/SecureRoute';
 import BookView from './Books/BookView';
 import Feature from './Home/Feature';
+import ShelfOptions from './Shelves/ShelfOptions';
 import { Navbar, Nav} from 'react-bootstrap';
 import {
   BrowserRouter as Router,
@@ -21,9 +22,10 @@ import search from './Assets/loupe.png';
 
 
 function App() {
-  const [login, setLogin] = useState({profile: 0, books: 0, loggedIn: false});
+  const [login, setLogin] = useState({profile: 0, shelves: [], loggedIn: false});
   const [viewState, setViewState] = useState({view : "shelf", bookId : 0});
   const [books, setBooks] = useState({b: 0});
+  const [shelfView, setShelfView] = useState(0);
 
     return (
       <Router>
@@ -34,8 +36,9 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link><NavLink className='nv-icon' to='/home'><i className="fas fa-book-reader" style={{fontSize : '1rem', margin : '6px'}}></i>Library</NavLink></Nav.Link>
-              <Nav.Link><NavLink className='nv-icon' to='/books'><i className="fas fa-search" style={{fontSize : '1rem', margin : '6px'}}></i>Book Search</NavLink></Nav.Link>
+              <Nav.Link><NavLink className='nv-icon' to='/home'><i className="fa fa-book-reader" style={{fontSize : '1rem', margin : '6px'}}></i>Library</NavLink></Nav.Link>
+              <Nav.Link><NavLink className='nv-icon' to='/books'><i className="fa fa-search" style={{fontSize : '1rem', margin : '6px'}}></i>Book Search</NavLink></Nav.Link>
+              <Nav.Link><NavLink className='nv-icon' to='/shelves'><i className="fa fa-bars" style={{fontSize : '1rem', margin : '6px'}}></i>Shelf Options</NavLink></Nav.Link>
             </Nav>
             {login.loggedIn ? <LogoutButton auth={setLogin}>Logout</LogoutButton> : null}
           </Navbar.Collapse>
@@ -47,9 +50,22 @@ function App() {
             <Auth loginHandle={setLogin}></Auth>
           </Route>
           <SecureRoute path='/home' login={login}>
-            {viewState.view === "shelf" 
+            {viewState.view === "shelf" && login.shelves.length !== 0
             ? (<>
-                <Shelf login={login} setLogin={setLogin} setViewState={setViewState}></Shelf>
+                <div style={{display: 'flex', textAlign: 'center', width: '100%', justifyContent: 'center', padding: '40px'}}>
+                  <h1>{login.shelves[shelfView].name}</h1>
+                  <div className="dropdown">
+                      <button className="btn">
+                          <i className="fa fa-caret-down"></i>
+                      </button>
+                      <div className="dropdown-content">
+                          {login.shelves.map((shelf, index) => 
+                              <a style={{color: 'black', cursor: 'pointer'}} onClick={() => setShelfView(index)}>{shelf.name}</a>
+                          )}
+                      </div>
+                  </div>
+                </div>
+                <Shelf shelfIndex={shelfView} login={login} shelf={login.shelves[shelfView]} setLogin={setLogin} setViewState={setViewState}></Shelf>
                 <Feature login={login} setLogin={setLogin} setViewState={setViewState}></Feature> 
               </>)
             : null}
@@ -68,9 +84,9 @@ function App() {
             : null}
 
           </SecureRoute>
-          <Route path='/login-error'>
-
-          </Route>
+          <SecureRoute path='/shelves' login={login}>
+              <ShelfOptions login={login} setLogin={setLogin}></ShelfOptions>
+          </SecureRoute>
       </div>
       </Router>
     );

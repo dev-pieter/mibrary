@@ -1,17 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 
-export default function RemoveBook({login, setLogin, setViewState, bookId, at}) {
+export default function RemoveBook({shelfIndex ,login, setLogin, setViewState, bookId, at}) {
     async function removeBook() {
-        const arrBooks = login.books;
-        console.log(arrBooks);
-        await setLogin({...login, books : arrBooks.filter(item => item !== bookId)});
+        console.log(console.log(shelfIndex));
+        const arrShelf = login.shelves;
+        
+        const newArray = arrShelf[shelfIndex].books.filter(item => item !== bookId);
+        
+        arrShelf[shelfIndex].books = newArray;
+
+        await setLogin({...login, shelves : arrShelf});
 
 
-            await axios.get(`http://localhost:3000/${login.profile._id}/${bookId}/remove`)
-            .then(res => {
-                console.log(res);
-            })
+            // await axios.get(`http://localhost:3000/${login.profile._id}/${bookId}/remove`)
+            // .then(res => {
+            //     console.log(res);
+            // })
     }
 
     return (

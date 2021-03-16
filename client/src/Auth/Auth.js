@@ -45,7 +45,7 @@ export default function Auth({loginHandle}) {
                 if(!object.data.found){
                     alert('Incorrect username or password. Please try again.');
                 }else{
-                    loginHandle({profile: object.data, books: object.data.books, loggedIn: true}); 
+                    loginHandle({profile: object.data, shelves: object.data.shelves, loggedIn: true}); 
                 }
             }else if(view === 'register'){
                 const object = await requestRegister(body);
@@ -81,7 +81,7 @@ export default function Auth({loginHandle}) {
                             </label><br/>
                             <label>
                             Password:<br/>
-                            <input name="password" type="text" value={info.password} onChange={handlePassword} />
+                            <input name="password" type="password" value={info.password} onChange={handlePassword} />
                             </label><br/>
                             <input type="submit" value="Login"/>
                         </form>
@@ -106,7 +106,7 @@ export default function Auth({loginHandle}) {
                             </label><br/>
                             <label>
                             Password:<br/>
-                            <input name="password" type="text" value={info.password} onChange={handlePassword} />
+                            <input name="password" type="password" value={info.password} onChange={handlePassword} />
                             </label><br/>
                             <input type="submit" value="Register"/>
                         </form>

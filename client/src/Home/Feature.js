@@ -10,7 +10,7 @@ import grow from '../Assets/saving-money.png';
 
 const baseUri = "https://api.nytimes.com/svc/books/v3/lists/current"
 
-export default function Feature({setViewState, login, setLogin, at = 0}) {
+export default function Feature({login, setLogin, setViewState}) {
     const [bestSellers, setBestSellers] = useState({books : [], cat : "hardcover-fiction"})
 
     useEffect(async () => {
@@ -43,7 +43,7 @@ export default function Feature({setViewState, login, setLogin, at = 0}) {
                 <Row style={{justifyContent : 'center'}}>
                     <div style={{width: '70vw', borderBottom: '1px solid grey', marginBottom: '40px'}}></div>
                 </Row>
-                <Row style={{padding :'20px' ,display: "flex", justifyContent : 'center',textAlign: 'center', width: '100%'}}>
+                <Row style={{padding :'20px', minHeight: '20vh' ,display: "flex", alignItems: 'center', justifyContent : 'center',textAlign: 'center', width: '100%'}}>
                     <h2>New York Best Sellers</h2>
                 </Row>
                 <Row>
@@ -55,7 +55,7 @@ export default function Feature({setViewState, login, setLogin, at = 0}) {
                                 <i className='fas fa-balance-scale select' onClick={() => changeCat('business-books')} style={{cursor: 'pointer'}}></i><h7 className='catag'>Success & Growth</h7><br/>
                         </div>
                     </Col>
-                    <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', margin: '0'}}>
+                    <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', margin: '0', height: '70vh'}}>
                             {bestSellers.books.map(item => 
                                 <Books setViewState={setViewState} login={login} setLogin={setLogin} bookId={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0}></Books>
                             )}

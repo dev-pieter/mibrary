@@ -78,8 +78,8 @@ router.post('/register', async (req, res) => {
 
 });
 
-router.get('/:uid/:bid/add-book', async (req, res) => {
-  const {uid, bid} = req.params;
+router.get('/:uid/:bid/:shelf/add-book', async (req, res) => {
+  const {uid, bid, shelf} = req.params;
 
   const db = await client.db("mibraryData").collection("users");
 
@@ -87,10 +87,10 @@ router.get('/:uid/:bid/add-book', async (req, res) => {
     const user = await db.findOne({_id : ObjectId(uid)});
     
     if(user !== null){
-      const booksArr = user.books;
-      booksArr.unshift(bid);
+      const shelves = user.shelves;
+      shelves[shelf].books.unshift(bid);
 
-      db.updateOne({_id : ObjectId(uid)}, {$set: { books : booksArr }}, function(err, result){
+      db.updateOne({_id : ObjectId(uid)}, {$set: { shelves : shelves }}, function(err, result){
         if(err){
           throw err;
         }else{

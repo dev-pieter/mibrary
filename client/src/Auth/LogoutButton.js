@@ -3,7 +3,7 @@ import { GoogleLogout } from 'react-google-login';
 
 export default function LogoutButton({auth}) {
     const logout = (response) => {
-        auth({token: 0 ,loggedIn: false})
+        auth({shelves: [], loggedIn: false})
     }
 
     return (
