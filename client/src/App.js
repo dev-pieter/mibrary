@@ -8,6 +8,7 @@ import SecureRoute from './Auth/SecureRoute';
 import BookView from './Books/BookView';
 import Feature from './Home/Feature';
 import ShelfOptions from './Shelves/ShelfOptions';
+import Banner from './Home/Banner';
 import { Navbar, Nav} from 'react-bootstrap';
 import {
   BrowserRouter as Router,
@@ -50,10 +51,11 @@ function App() {
             <Auth loginHandle={setLogin}></Auth>
           </Route>
           <SecureRoute path='/home' login={login}>
-            {viewState.view === "shelf" && login.shelves.length !== 0
+            {viewState.view === "shelf" && login.shelves.length !== 0 && login.shelves[shelfView] !== undefined
             ? (<>
-                <div style={{display: 'flex', textAlign: 'center', width: '100%', justifyContent: 'center', padding: '40px'}}>
-                  <h1>{login.shelves[shelfView].name}</h1>
+                <Banner></Banner>
+                <div style={{display: 'flex', textAlign: 'center', width: '100%', justifyContent: 'center', padding: '10px'}}>
+                  <h2>{login.shelves[shelfView].name}</h2>
                   <div className="dropdown">
                       <button className="btn">
                           <i className="fa fa-caret-down"></i>
@@ -68,7 +70,7 @@ function App() {
                 <Shelf shelfIndex={shelfView} login={login} shelf={login.shelves[shelfView]} setLogin={setLogin} setViewState={setViewState}></Shelf>
                 <Feature login={login} setLogin={setLogin} setViewState={setViewState}></Feature> 
               </>)
-            : null}
+            : shelfView !== 0 ? setShelfView(0) : null}
             {viewState.view === "book" 
             ? <BookView bookId={viewState.bookId} setViewState={setViewState}></BookView>
             : null}

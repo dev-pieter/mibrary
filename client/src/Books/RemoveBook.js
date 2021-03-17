@@ -10,13 +10,12 @@ export default function RemoveBook({shelfIndex ,login, setLogin, setViewState, b
         
         arrShelf[shelfIndex].books = newArray;
 
-        await setLogin({...login, shelves : arrShelf});
 
-
-            // await axios.get(`http://localhost:3000/${login.profile._id}/${bookId}/remove`)
-            // .then(res => {
-            //     console.log(res);
-            // })
+            await axios.get(`http://localhost:3000/${login.profile._id}/${bookId}/${shelfIndex}/remove`)
+            .then(res => {
+                console.log('Book removed');
+                setLogin({...login, shelves : arrShelf});
+            })
     }
 
     return (

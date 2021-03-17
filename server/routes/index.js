@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
   const db = await client.db("mibraryData").collection("users");
 
   try {
-    const response1 = await db.insertOne({userName : username, password : password, books : []});
+    const response1 = await db.insertOne({userName : username, password : password, shelves : [{name : 'Mi Shelf', books : []}]});
 
     if(response1 !== null){
       response1.found = 1;
@@ -108,8 +108,8 @@ router.get('/:uid/:bid/:shelf/add-book', async (req, res) => {
   }
 });
 
-router.get('/:uid/:bid/remove', async (req, res) => {
-  const {uid, bid} = req.params;
+router.get('/:uid/:bid/:shelfIndex/remove', async (req, res) => {
+  const {uid, bid, shelfIndex} = req.params;
 
   const db = await client.db("mibraryData").collection("users");
 
@@ -117,9 +117,11 @@ router.get('/:uid/:bid/remove', async (req, res) => {
     const user = await db.findOne({_id : ObjectId(uid)});
 
     if(user !== null){
-      const booksArr = user.books;
+      const shelves = user.shelves;
+      const shelfBooks = shelves[shelfIndex].books.filter(id => id !== bid);
+      shelves[shelfIndex].books = shelfBooks;
 
-      db.updateOne({_id : ObjectId(uid)}, {$set: { books : booksArr.filter(id => id !== bid)}}, function(err, result){
+      db.updateOne({_id : ObjectId(uid)}, {$set: { shelves : shelves}}, function(err, result){
         if(err){
           throw err;
         }else{
@@ -135,6 +137,94 @@ router.get('/:uid/:bid/remove', async (req, res) => {
     res.status(400).json({message: `${error}`});
   }
 });
+
+router.get('/:uid/:shelfIndex/:name/edit-shelf', async (req, res) => {
+  const {uid, shelfIndex, name} = req.params;
+  const db = await client.db("mibraryData").collection("users");
+
+  try {
+    const user = await db.findOne({_id : ObjectId(uid)});
+
+    if(user !== null){
+      const shelves = user.shelves;
+      shelves[shelfIndex].name = name;
+
+      db.updateOne({_id : ObjectId(uid)}, {$set: { shelves : shelves}}, function(err, result){
+        if(err){
+          throw err;
+        }else{
+          res.status(200).send(result);
+        }
+      })
+    } else {
+      res.status(200).send(user);
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: `${error}`});
+  }
+})
+
+router.get('/:uid/:shelfIndex/remove-shelf', async (req, res) => {
+  const {uid, shelfIndex} = req.params;
+
+  const db = await client.db("mibraryData").collection("users");
+
+  try {
+    const user = await db.findOne({_id : ObjectId(uid)});
+
+    if(user !== null){
+      const shelves = user.shelves;
+      shelves.splice(shelfIndex, 1);
+
+      db.updateOne({_id : ObjectId(uid)}, {$set: { shelves : shelves}}, function(err, result){
+        if(err){
+          throw err;
+        }else{
+          res.status(200).send(result);
+        }
+      })
+    } else {
+      res.status(200).send(user);
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: `${error}`});
+  }
+
+})
+
+router.get('/:uid/add-shelf', async (req, res) => {
+  const {uid} = req.params;
+
+  const db = await client.db("mibraryData").collection("users");
+
+  try {
+    const user = await db.findOne({_id : ObjectId(uid)});
+
+    if(user !== null){
+      const shelves = user.shelves;
+      shelves.push({name: 'New Shelf', books : []});
+
+      db.updateOne({_id : ObjectId(uid)}, {$set: { shelves : shelves}}, function(err, result){
+        if(err){
+          throw err;
+        }else{
+          res.status(200).send(result);
+        }
+      })
+    } else {
+      res.status(200).send(user);
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: `${error}`});
+  }
+
+})
 
 module.exports = router;
 var express = require('express');

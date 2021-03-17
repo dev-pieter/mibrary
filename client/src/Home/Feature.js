@@ -44,10 +44,10 @@ export default function Feature({login, setLogin, setViewState}) {
                     <div style={{width: '70vw', borderBottom: '1px solid grey', marginBottom: '40px'}}></div>
                 </Row>
                 <Row style={{padding :'20px', minHeight: '20vh' ,display: "flex", alignItems: 'center', justifyContent : 'center',textAlign: 'center', width: '100%'}}>
-                    <h2>New York Best Sellers</h2>
+                    <h2>Popular by Genre</h2>
                 </Row>
                 <Row>
-                    <Col style={{display: 'flex', alignItems : 'center'}}>
+                    <Col style={{display: 'flex', paddingTop: '60px'}}>
                         <div>
                                 <i className='fas fa-moon select' onClick={() => changeCat('hardcover-fiction')} style={{cursor: 'pointer'}}></i><h7 className='catag'>Fiction</h7><br/>
                                 <i className='fas fa-star select' onClick={() => changeCat('young-adult')} style={{cursor: 'pointer'}}></i><h7 className='catag'>Young Adult</h7><br/>
@@ -57,7 +57,7 @@ export default function Feature({login, setLogin, setViewState}) {
                     </Col>
                     <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', margin: '0', height: '70vh'}}>
                             {bestSellers.books.map(item => 
-                                <Books setViewState={setViewState} login={login} setLogin={setLogin} bookId={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0}></Books>
+                                <Books setViewState={setViewState} login={login} setLogin={setLogin} bookId={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0} search={true}></Books>
                             )}
                     </Col>
                 </Row>

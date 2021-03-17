@@ -14,10 +14,10 @@ export default function BookView({bookId, setViewState = 0}) {
         if(!item.b){
             async function getBook() {
                 let b;
-                await axios.get(`https://openlibrary.org/api/books.json?bibkeys=ISBN:${bookId}&jscmd=data`)
+                await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${bookId}`)
                 .then(res => {
                     console.log(res.data);
-                    b = res.data[`ISBN:${bookId}`];
+                    b = res.data.items[0].volumeInfo;
                 })
 
                 return b;
@@ -41,21 +41,21 @@ export default function BookView({bookId, setViewState = 0}) {
                 <Row style={{padding : "40px"}}>
                     <Col style={{textAlign: "center"}}>
                         <br/>
-                        {item.b === 0 || item.b.cover === undefined
+                        {item.b === 0 || item.b.imageLinks === undefined
                         ? <Image className='view-image' style={{width: "250px", boxShadow: "0 0 10px black"}} src={placeholder}></Image> 
-                        : <Image className='view-image' style={{width: "250px", boxShadow: "0 0 10px black"}} src={item.b.cover.medium}></Image>}
+                        : <Image className='view-image' style={{width: "250px", boxShadow: "0 0 10px black"}} src={item.b.imageLinks.thumbnail}></Image>}
                     </Col>
                     <Col xs={8}>
-                        <h2>{item.title}</h2>
+                        <h2>{item.b.title}</h2>
                         <br/>
                         {item.b.authors !== undefined
-                        ? <p>By {item.b.authors[0].name}.</p>
+                        ? <p>By {item.b.authors[0]}.</p>
                         : null}
                         <br></br>
-                        <div dangerouslySetInnerHTML={{__html: item.b.subtitle}}></div>
+                        <div dangerouslySetInnerHTML={{__html: item.b.description}}></div>
                         <br></br>
                         <div style={{display: 'flex'}}>
-                            <Button variant="info" href={item.b.url} target="_blank">Buy Book</Button>
+                            <Button variant="info" href={item.b.infoLink} target="_blank">Buy Book</Button>
                             <div style={{width: "10px"}}/>
                             <Button variant="danger" onClick={setState}>Cancel</Button>
                         </div>

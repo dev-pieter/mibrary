@@ -4,8 +4,10 @@ import '../css/AddBook.css';
 // bookId, login, setLogin, book, setBook, shelves
 export default function AddBook(props) {
     async function addBook(id = 0, index, push = 0) {
+        if(props.login.shelves[index].books.includes(id)){
+            return null;
+        }else{
             const arrShelves = props.login.shelves;
-
 
             push === 1 
             ? arrShelves[index].books.unshift(id)
@@ -18,6 +20,7 @@ export default function AddBook(props) {
                 console.log(res);
                 props.setLogin({...props.login, shelves : arrShelves});
             })
+        }
     }
 
     return (

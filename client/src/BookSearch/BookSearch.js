@@ -51,11 +51,11 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
                         value={value}
                         onChange={setVal}
                     />
-                    <input type='submit' />
+                    <input type='submit' style={{borderRadius: '10px', color : 'white', background: 'none', border: '1px solid white', marginLeft: '5px'}}/>
                 </form>
                 </div>
             </Row>
-            <Row style={{width: '100vw', overflowX: 'scroll'}}>
+            <Row style={{width: '100vw', overflowX: 'scroll', height: '65vh'}}>
                 <Col style={{width: '100vw', display: 'flex'}}>
                 {typeof books.b === 'object' ? books.b.slice(0, 25).map((item) => (item.isbn !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.isbn[0]} setViewState={setViewState} search={true}>{item.id}</Book> : null)) : null}  
                 </Col>

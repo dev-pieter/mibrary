@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Row, Button, Col} from 'react-bootstrap';
 import Book from '../Books/Books';
 import '../css/Feature.css'
 
 export default function Shelf({shelfIndex, login, shelf, setLogin, setViewState, at}) {
-
+    if(shelf.books.length === 0){
+        return (
+            <Container fluid style={{height: '90vh', textAlign : 'center'}}>
+                <h5>This Shelf is Empty, Fill it up with some titles!</h5>
+            </Container>
+        )
+    }else{
         return (
             <div>
                 <Container fluid style={{height: '90vh'}}>
@@ -19,5 +25,5 @@ export default function Shelf({shelfIndex, login, shelf, setLogin, setViewState,
                 </Container>
             </div>
         )
-    
+    }
 }
