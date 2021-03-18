@@ -17,7 +17,6 @@ export default function AddBook(props) {
 
             await axios.get(`https://goodoakfurniture.co.za/${props.login.profile._id}/${props.bookId}/${index}/add-book`)
             .then(res => {
-                console.log(res);
                 props.setLogin({...props.login, shelves : arrShelves});
             })
         }

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap'
-import { GoogleLogin } from 'react-google-login';
-import { Redirect } from 'react-router-dom';
 
 export default function Auth({loginHandle}) {
     const [view, setView] = useState('login');
@@ -23,9 +21,15 @@ export default function Auth({loginHandle}) {
     }
 
     async function requestRegister(obj){
-        let object;
-        object = await axios.post(`https://goodoakfurniture.co.za/register`, obj);
-        return object;
+        const exists = await axios.post(`https://goodoakfurniture.co.za/login`, obj);
+
+        if(!exists.data.found){
+            const object = await axios.post(`https://goodoakfurniture.co.za/register`, obj);
+            return object;
+        }else {
+            alert("User Exists! Login?");
+            return 0;
+        }
     }
 
     async function handleSubmit(e) {
@@ -40,7 +44,6 @@ export default function Auth({loginHandle}) {
 
             if(view=== 'login'){
                 const object = await request(body);
-                console.log(object.status);
 
                 if(!object.data.found){
                     alert('Incorrect username or password. Please try again.');
@@ -49,8 +52,8 @@ export default function Auth({loginHandle}) {
                 }
             }else if(view === 'register'){
                 const object = await requestRegister(body);
-                if(!object.data.found){
-                    alert('Unsuccessful register');
+                if(!object){
+                    setView('login');
                 }else{
                     alert('Welcome ' + info.username + '. Please log in to continue');
                     setView('login');

@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import Auth from './Auth/Auth';
 import LogoutButton from './Auth/LogoutButton';
 import BookSearch from './BookSearch/BookSearch';
@@ -18,8 +17,6 @@ import {
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/app.css';
-import library from './Assets/book.png';
-import search from './Assets/loupe.png';
 
 
 function App() {

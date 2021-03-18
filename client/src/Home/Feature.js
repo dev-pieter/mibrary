@@ -19,7 +19,6 @@ export default function Feature({login, setLogin, setViewState}) {
                 let booksArr = [];
                 await axios.get(`${baseUri}/${bestSellers.cat}.json?api-key=rxHByIHdBxZKoy7MWVpwTfAxRKw1wovs`)
                 .then(res => {
-                    console.log(res);
                     res.data.results.books.forEach(item => {
                         booksArr.push(item);
                     })

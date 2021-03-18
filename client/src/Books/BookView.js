@@ -5,7 +5,6 @@ import axios from 'axios';
 import parse from 'html-react-parser';
 import '../css/BookView.css'
 
-const baseUri = "https://www.googleapis.com/books/v1/"
 
 export default function BookView({bookId, setViewState = 0}) {
     const [item, setItem] = useState({b : 0});
@@ -16,7 +15,6 @@ export default function BookView({bookId, setViewState = 0}) {
                 let b;
                 await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${bookId}`)
                 .then(res => {
-                    console.log(res.data);
                     b = res.data.items[0].volumeInfo;
                 })
 
@@ -25,7 +23,6 @@ export default function BookView({bookId, setViewState = 0}) {
 
             const b = await getBook();
             setItem({b : b});
-            console.log(item)
         }
     }, [item]);
 

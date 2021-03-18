@@ -35,9 +35,7 @@ export default function ShelfOptions(login, setLogin) {
         .then(res => {
             login.setLogin({...login.login, shelves : shelves});
         })
-    }
-
-    console.log(login);
+    }        
 
     if(login.login['shelves'] === undefined){
         return (null)

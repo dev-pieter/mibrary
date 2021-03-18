@@ -3,7 +3,6 @@ import axios from 'axios';
 
 export default function RemoveBook({shelfIndex ,login, setLogin, setViewState, bookId, at}) {
     async function removeBook() {
-        console.log(console.log(shelfIndex));
         const arrShelf = login.shelves;
         
         const newArray = arrShelf[shelfIndex].books.filter(item => item !== bookId);

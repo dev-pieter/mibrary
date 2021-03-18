@@ -11,7 +11,6 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
         let books1;
         await axios.get(`https://openlibrary.org/search.json?q=${params}`)
           .then(res => {
-            console.log(res.data);
             books1 = res.data.docs;
           })
         return books1;

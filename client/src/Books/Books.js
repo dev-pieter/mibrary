@@ -15,7 +15,6 @@ export default function Books({shelfIndex = 0, login, setLogin=0, isbn = 0, book
             async function getBook() {
                 await axios.get(`https://openlibrary.org/api/books.json?bibkeys=ISBN:${bookId}&jscmd=data`)
                 .then(res => {
-                    console.log(res.data[`ISBN:${bookId}`]);
                     setBook(res.data[`ISBN:${bookId}`]);
                 })
             }
@@ -69,7 +68,6 @@ export default function Books({shelfIndex = 0, login, setLogin=0, isbn = 0, book
                 </div>
             );
         }else{
-            console.log('no Book');
             return null;
         }
 }
