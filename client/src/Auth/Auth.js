@@ -18,13 +18,13 @@ export default function Auth({loginHandle}) {
 
     async function request(obj){
         let object;
-        object = await axios.post(`http://localhost:3000/login`, obj);
+        object = await axios.post(`https://goodoakfurniture.co.za/login`, obj);
         return object;
     }
 
     async function requestRegister(obj){
         let object;
-        object = await axios.post(`http://localhost:3000/register`, obj);
+        object = await axios.post(`https://goodoakfurniture.co.za/register`, obj);
         return object;
     }
 

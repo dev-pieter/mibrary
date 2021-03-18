@@ -7,6 +7,6 @@ export default function LogoutButton({auth}) {
     }
 
     return (
-        <button style={{borderRadius: '10px', color : 'white', background: 'none', border: '1px solid white'}} onClick={logout}>Logout</button>
+        <button style={{borderRadius: '5px', color : 'white', background: 'none', border: '1px solid white'}} onClick={logout}>Logout</button>
     )
 }

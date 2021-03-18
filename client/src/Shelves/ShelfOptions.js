@@ -9,7 +9,7 @@ export default function ShelfOptions(login, setLogin) {
         const shelves = login.login.shelves;
         shelves.splice(index, 1);
 
-        await axios.get(`http://localhost:3000/${login.login.profile._id}/${index}/remove-shelf`)
+        await axios.get(`https://goodoakfurniture.co.za/${login.login.profile._id}/${index}/remove-shelf`)
         .then(res => {
             login.setLogin({...login.login, shelves : shelves});
         })
@@ -19,7 +19,7 @@ export default function ShelfOptions(login, setLogin) {
         const shelves = login.login.shelves;
         shelves.push({name : name, books : []});
 
-        await axios.get(`http://localhost:3000/${login.login.profile._id}/add-shelf`)
+        await axios.get(`https://goodoakfurniture.co.za/${login.login.profile._id}/add-shelf`)
         .then(res => {
             login.setLogin({...login.login, shelves : shelves});
         })
@@ -31,7 +31,7 @@ export default function ShelfOptions(login, setLogin) {
 
         shelves[index].name = name;
 
-        await axios.get(`http://localhost:3000/${login.login.profile._id}/${index}/${name}/edit-shelf`)
+        await axios.get(`https://goodoakfurniture.co.za/${login.login.profile._id}/${index}/${name}/edit-shelf`)
         .then(res => {
             login.setLogin({...login.login, shelves : shelves});
         })

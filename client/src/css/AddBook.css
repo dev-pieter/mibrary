@@ -1,7 +1,6 @@
 .btn {
     color: white;
-    padding: 16px;
-    font-size: 16px;
+    font-size: 10px;
     border: none;
     outline: none;
   }
@@ -43,7 +42,7 @@
   
   /* Change the background color of the dropdown button when the dropdown content is shown */
   .btn:hover, .dropdown:hover .btn{
-    background-color: white;
+    background-color: none;
   }
 
   .btn:hover, .dropdown:hover i{
