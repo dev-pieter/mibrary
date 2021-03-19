@@ -49,21 +49,23 @@ export default function Books({shelfIndex = 0, login, setLogin=0, isbn = 0, book
                     {book.cover !== undefined 
                     ? <Card.Img className='c-image' variant="top" src={book.cover["medium"]}/> 
                     : <Card.Img className='c-image' variant="top" src={placeholder}/> }
-                    <Card.Body>
-                        {/* <Card.Title>{bookObj.title}</Card.Title> */}
-                        <Card.Text className='c-text'>
-                        {book.title.length >= 25
-                        ? book.title.substring(0,25) + '...'
-                        : book.title}
-                        </Card.Text>
-                        {!checkBook() 
-                        ?   <div style={{display: 'flex'}}>
-                                <Button variant={random_color}><a onClick={setView} style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
-                                <AddBook bookId={bookId} login={login} setLogin={setLogin} book={book} setBook={setBook} shelves={login.shelves}></AddBook>
-                            </div> 
-                        :   <Button variant={random_color}><a onClick={setView} style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
-                        }   
-                    </Card.Body>
+                    <div className='hidden-card-body'>
+                            {!checkBook() 
+                            ?   <div style={{display: 'flex', justifyContent : 'center'}}>
+                                    <Button variant={random_color}><a onClick={setView} style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
+                                    <AddBook bookId={bookId} login={login} setLogin={setLogin} book={book} setBook={setBook} shelves={login.shelves}></AddBook>
+                                </div> 
+                            :   <Button variant={random_color}><a onClick={setView} style={{textDecoration: 'none', color: 'white'}}>view</a></Button>
+                            }   
+                            <Card.Text className='c-text'>
+                                {book.title.length >= 25
+                                ? book.title.substring(0,25) + '...'
+                                : book.title}
+                            </Card.Text>
+                    </div>
+                    {/* <Card.Body>
+                        
+                    </Card.Body> */}
                     </Card>
                 </div>
             );

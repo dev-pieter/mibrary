@@ -1,11 +1,35 @@
 .phone-card {
-    width: 10rem;
+    width: 11.5rem;
     font-size: small;
+}
+
+.hidden-card-body {
+    opacity: 0;
+    text-align: center;
+    justify-content: center;
+    position: absolute;
+    top: 90px;
+    width: 100%;
+    transition: max-height 0.5s, opacity 0.1s linear;
+}
+
+.phone-card:hover .hidden-card-body {
+    max-height: 150px;
+    opacity: 1;
+}
+
+.phone-card:hover .c-image {
+    filter: blur(2px) brightness(50%);
+    -webkit-filter: blur(2px) brightness(50%);
+}
+
+.c-text {
+    padding: 10px;
 }
 
 @media only screen and (max-width: 600px) {
     .phone-card {
         font-size: x-small;
-        width: 8rem;
+        width: 10rem;
     }
 }

@@ -13,7 +13,7 @@ export default function Shelf({shelfIndex, login, shelf, setLogin, setViewState,
     }else{
         return (
             <div>
-                <Container fluid style={{height: '90vh'}}>
+                <Container fluid style={{height: '70vh'}}>
                     <Row className='h-100'>
                         {/* <Col className='my-auto' style={{width:'100%', textAlign: 'center'}}>
                             <h1>{shelf.name}</h1>

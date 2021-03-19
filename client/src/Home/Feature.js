@@ -54,7 +54,7 @@ export default function Feature({login, setLogin, setViewState}) {
                                 <i className='fas fa-balance-scale select' onClick={() => changeCat('business-books')} style={{cursor: 'pointer'}}></i><h7 className='catag'>Success & Growth</h7><br/>
                         </div>
                     </Col>
-                    <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', margin: '0', height: '70vh'}}>
+                    <Col md={9} className="phone-col my-auto" style={{display : 'flex', overflowX: 'scroll', height: '60vh', paddingTop: '50px'}}>
                             {bestSellers.books.map(item => 
                                 <Books setViewState={setViewState} login={login} setLogin={setLogin} bookId={item.isbns.length !== 0 ? item.isbns[0].isbn10 : 0} search={true}></Books>
                             )}

@@ -9,9 +9,9 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
     async function eff(params) {
         async function getBooks() {
         let books1;
-        await axios.get(`https://openlibrary.org/search.json?q=${params}`)
+        await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${params}`)
           .then(res => {
-            books1 = res.data.docs;
+            books1 = res.data.items;
           })
         return books1;
       };
@@ -56,7 +56,7 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
             </Row>
             <Row style={{width: '100vw', overflowX: 'scroll', height: '65vh'}}>
                 <Col style={{width: '100vw', display: 'flex'}}>
-                {typeof books.b === 'object' ? books.b.slice(0, 25).map((item) => (item.isbn !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.isbn[0]} setViewState={setViewState} search={true}>{item.id}</Book> : null)) : null}  
+                {typeof books.b === 'object' ? books.b.slice(0, 25).map((item) => (item.volumeInfo.industryIdentifiers !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.volumeInfo.industryIdentifiers[0].identifier} setViewState={setViewState} search={true}></Book> : null)) : null}  
                 </Col>
             </Row>
         </Container>
