@@ -9,6 +9,7 @@ import Feature from './Home/Feature';
 import ShelfOptions from './Shelves/ShelfOptions';
 import Banner from './Home/Banner';
 import { Navbar, Nav} from 'react-bootstrap';
+import Footer from './Home/Footer';
 import {
   BrowserRouter as Router,
   Route,
@@ -30,7 +31,7 @@ function App() {
       <div className="App">
         {/* Navigation */}
         <Navbar expand="lg" sticky="top" >
-          <Navbar.Brand href="/" style={{display: 'flex'}}><h3 style={{color: 'black', background:'white', borderRadius: '5px', padding: '8px'}}>Mi</h3></Navbar.Brand>
+          <Navbar.Brand style={{display: 'flex'}}><Nav.Link><NavLink className='nv-icon' to='/home'><h3 style={{color: 'black', background:'white', borderRadius: '5px', padding: '8px'}}>Mi</h3></NavLink></Nav.Link></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -86,6 +87,7 @@ function App() {
           <SecureRoute path='/shelves' login={login}>
               <ShelfOptions login={login} setLogin={setLogin}></ShelfOptions>
           </SecureRoute>
+          <Footer/>
       </div>
       </Router>
     );

@@ -18,6 +18,6 @@ export default function RemoveBook({shelfIndex ,login, setLogin, setViewState, b
     }
 
     return (
-        <button onClick={removeBook} style={{zIndex: '2', borderRadius: '20px',background: 'white', position: 'absolute', border: 'none', left: '-4px', top: '-4px'}}>x</button>
+        <button onClick={removeBook} style={{zIndex: '1', borderRadius: '20px',background: 'white', position: 'absolute', border: 'none', left: '-4px', top: '-4px'}}>x</button>
     )
 }

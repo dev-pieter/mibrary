@@ -15,7 +15,11 @@ export default function BookView({bookId, setViewState = 0}) {
                 let b;
                 await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${bookId}`)
                 .then(res => {
-                    b = res.data.items[0].volumeInfo;
+                    if(res.data.items === undefined){
+                        b = undefined;
+                    }else{
+                        b = res.data.items[0].volumeInfo;
+                    }
                 })
 
                 return b;
@@ -23,6 +27,7 @@ export default function BookView({bookId, setViewState = 0}) {
 
             const b = await getBook();
             setItem({b : b});
+            window.scrollTo(0, 0);
         }
     }, [item]);
 
@@ -32,7 +37,7 @@ export default function BookView({bookId, setViewState = 0}) {
 
     if(item.b !== undefined){
         return (
-            <Container fluid>
+            <Container fluid style={{minHeight: "110vh", paddingBottom: '150px'}}>
                 <br/>
                 <Button style={{background: "black", borderColor: "black", margin: "25px", boxShadow: "3px 3px 10px black"}} onClick={setState}>{"<"}</Button>
                 <Row style={{padding : "40px"}}>
@@ -60,5 +65,9 @@ export default function BookView({bookId, setViewState = 0}) {
                 </Row>
             </Container>
         )  
+    }else{
+        return(
+            <Button style={{background: "black", borderColor: "black", margin: "25px", boxShadow: "3px 3px 10px black"}} onClick={setState}>{"<"}</Button>
+        );
     }
 }

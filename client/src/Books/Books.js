@@ -13,9 +13,13 @@ export default function Books({shelfIndex = 0, login, setLogin=0, isbn = 0, book
     
     useEffect(async () => {
             async function getBook() {
-                await axios.get(`https://openlibrary.org/api/books.json?bibkeys=ISBN:${bookId}&jscmd=data`)
+                await axios.get(`https://www.googleapis.com/books/v1/volumes?q=isbn:${bookId}`)
                 .then(res => {
-                    setBook(res.data[`ISBN:${bookId}`]);
+                    if(res.data !== undefined ){
+                        if(res.data.totalItems > 0){
+                            setBook(res.data.items[0].volumeInfo);
+                        }
+                    }
                 })
             }
 
@@ -41,13 +45,13 @@ export default function Books({shelfIndex = 0, login, setLogin=0, isbn = 0, book
 
         if(book !== undefined && book !== 0){
             return (
-                <div style={{margin: "20px", }}>
+                <div style={{margin: "20px"}}>
                     <Card className='phone-card' style={{background: 'none', color: 'white', boxShadow: '0 0 10px black'}}>
                     {!search 
                     ? <RemoveBook shelfIndex={shelfIndex} login={login} setLogin={setLogin} setViewState={setViewState} bookId={bookId} at={at}></RemoveBook>
                     : null}
-                    {book.cover !== undefined 
-                    ? <Card.Img className='c-image' variant="top" src={book.cover["medium"]}/> 
+                    {book.imageLinks !== undefined 
+                    ? <Card.Img className='c-image' variant="top" src={book.imageLinks.thumbnail}/> 
                     : <Card.Img className='c-image' variant="top" src={placeholder}/> }
                     <div className='hidden-card-body'>
                             {!checkBook() 

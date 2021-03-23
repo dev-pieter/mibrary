@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Book from '../Books/Books';
 import { Container, Row, Col } from 'react-bootstrap';
+import '../css/Feature.css';
 
 export default function BookSearch({books, setBooks, setLogin, login, setViewState}) {
     const [value, setValue] = useState("");
@@ -11,7 +12,7 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
         let books1;
         await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${params}`)
           .then(res => {
-            books1 = res.data.items;
+            books1 = res.data.items.slice(0, 25);
           })
         return books1;
       };
@@ -35,7 +36,7 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
     }
 
     return (
-        <Container fluid>
+        <Container fluid style={{minHeight: "110vh", position: "relative"}}>
             <Row style={{display : 'flex', justifyContent: 'center', padding: '20px', textAlign: 'center'}}>
                 <div>
                 <br/>
@@ -54,9 +55,9 @@ export default function BookSearch({books, setBooks, setLogin, login, setViewSta
                 </form>
                 </div>
             </Row>
-            <Row style={{width: '100vw', overflowX: 'scroll', height: '65vh'}}>
+            <Row className='phone-col' style={{width: '100vw', overflowX: 'scroll', height: '65vh'}}>
                 <Col style={{width: '100vw', display: 'flex'}}>
-                {typeof books.b === 'object' ? books.b.slice(0, 25).map((item) => (item.volumeInfo.industryIdentifiers !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.volumeInfo.industryIdentifiers[0].identifier} setViewState={setViewState} search={true}></Book> : null)) : null}  
+                {typeof books.b === 'object' ? books.b.map((item) => (item.volumeInfo.industryIdentifiers !== undefined ? <Book setLogin={setLogin} login={login} bookId={item.volumeInfo.industryIdentifiers[0].identifier} setViewState={setViewState} search={true}></Book> : null)) : null}  
                 </Col>
             </Row>
         </Container>

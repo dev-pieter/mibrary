@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
+import '../css/Banner.css';
+import banner from '../Assets/MiBrary.png';
 
 export default function Banner() {
     return (
